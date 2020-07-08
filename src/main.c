@@ -7,12 +7,27 @@
  */
 
 #include <stdio.h>
+#define MAX 20
 
 int main() {
 
-  int x, y;
+  int i, vet[MAX];
 
-  scanf("%d %d\n", &x, &y);
-  printf("%d\n", x + 200);
+  for (i=0; i < MAX ; i++) vet[i] = '\0'; //Inicializando vetor com valores nulos
+
+    
+  while (vet[i] != '\n'){
+	
+	scanf("%d", &vet[i]);
+
+	if (vet[i] == '\n') break;
+
+	i++;
+  }
+
+  for (i=0; i < MAX ; i++){
+	printf("%d ", vet[i]);
+  }
+
   return 0;
 }
