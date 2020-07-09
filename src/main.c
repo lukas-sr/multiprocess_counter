@@ -11,16 +11,15 @@
 
 int main() {
 
-  int i, vet[MAX];
+  int i, vet[MAX], var;
 
   for (i=0; i < MAX ; i++) vet[i] = '\0'; //Inicializando vetor com valores nulos
 
-    
   while (vet[i] != '\n'){
 	
-	scanf("%d", &vet[i]);
-
-	if (vet[i] == '\n') break;
+	scanf("%d", &var);
+	vet[i] = var;
+	if (var == '\n') break;
 
 	i++;
   }
