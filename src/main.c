@@ -1,34 +1,27 @@
-/* Contador de palavras
- *
- * Este programa recebera uma serie de caracteres representando palavras em sua
- * entrada. Ao receber um caractere fim de linha ('\n'), deve imprimir na tela o
- * numero de palavras separadas que recebeu e, apos, encerrar.
- *
- */
-
 #include <stdio.h>
 #include <stdlib.h>
 #define MAX 20
+#define NUM_THREADS 4
 
+int n_primos;
 
-int main() {
-  int i, vet[MAX];
+int main(){
+   char aux;
+   int i;
+   unsigned int *vetor = (int*)malloc(MAX * sizeof(int));
 
-  for (i=0; i < MAX ; i++) vet[i] = '\0'; //Inicializando vetor com valores nulos
+   for ( i = 0 ; i < MAX ; i++) vetor[i] = '\0';
 
-    
-  while (vet[i] != '\n'){
-	
-	scanf("%d", &vet[i]);
+	for ( i = 0 ; (aux != '\n') && (aux != EOF) ; i++){
+		aux = scanf("%u", &vetor[i]);
 
-	if (vet[i] == '\n') break;
+		printf("\ni=%d vetor[i]=%d", i, vetor[i]);
+		if( aux == '\n' ) printf("sou um barra N\n");
 
-	i++;
-  }
+		if( aux == EOF ) printf("sou um EOF\n");	
+	}
 
-  for (i=0; i < MAX ; i++){
-	printf("%d ", vet[i]);
-  }
+	for (i = 0 ; i < MAX ; i++) printf("%d", vetor[i]);
 
-  return 0;
+   return 0;
 }
