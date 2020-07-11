@@ -7,7 +7,7 @@ int n_primos;
 
 int main(){
 	char aux;
-	int i;
+	int i, flag;
 	unsigned int *vetor = (int*)malloc(MAX * sizeof(int));
 	for ( i = 0 ; i < MAX ; i++) vetor[i] = '\0';
 
@@ -17,10 +17,11 @@ int main(){
 		printf("\ni=%d vetor[i]=%d", i, vetor[i]);
 		if( aux == EOF ){
 			printf("sou um EOF\n");
+         flag = i;
 		}	
 	}
 
-	for (i = 0 ; i < MAX ; i++) printf("%d", vetor[i]);
+	for (i = 0 ; i < flag  ; i++) printf("%d", vetor[i]);
 
 	return 0;
 }
