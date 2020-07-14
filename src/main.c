@@ -12,21 +12,21 @@ unsigned int vetor[MAX], size_vet = 0;
 
 //input de valores para o vetor
 void input_vetor(){
-   int i;
-   char unit = '\0';
+   int l;
+   char unit;
 
-	for ( i = 0 ; i < MAX ; i++){
-      unit = scanf("%u", &vetor[i]);
+	for ( l = 0 ; l < MAX; l++){
+      unit = scanf("%u", &vetor[l]);
 
       if( unit == EOF ){
-			     size_vet = i;
-           break;
-		  }
+        size_vet = l;
+        break;
+      }
    }
 }
 
 //verifica se é primo
-unsigned int verifica_primo(int number){
+unsigned long int verifica_primo(int number){
    int cont_div = 0, n_primos = 0;
 
    for(int j = 1; j <= number ; j++){
@@ -59,18 +59,26 @@ int main(){
 
    for (int i = 0; i < MAX_PROCS ; i++){
       PID[i] = fork();
-      //se for um processo filho
       if (PID[i] == 0){
           primos = verifica_primo(vetor[i]);
           *shrd_memory += primos;
           exit(0);
       }
-      printf("Process filho %d com num_primos = %d\n", PID[i], *shrd_memory);
    }
 
+   //sincronizando processos
    for (int k = 0 ; k < MAX_PROCS; k++) waitpid(PID[k], NULL, 0);
 
-   printf("num_primos = %d\n", *shrd_memory);
+   for (int i = 4; i < MAX_PROCS ; i++){
+      PID[i] = fork();
+      if (PID[i] == 0){
+          primos = verifica_primo(vetor[i]);
+          *shrd_memory += primos;
+          exit(0);
+      }
+   }
+
+   printf("%d\n", *shrd_memory);
 
    //printf("%ls\n", shrd_memory);
 
