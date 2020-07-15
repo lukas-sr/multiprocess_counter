@@ -15,7 +15,7 @@ void input_vetor(){
    int l;
    char unit;
 
-	for ( l = 0 ; l < MAX; l++){
+   for ( l = 0 ; l < MAX; l++){
       unit = scanf("%u", &vetor[l]);
 
       if( unit == EOF ){
@@ -26,20 +26,20 @@ void input_vetor(){
 }
 
 //verifica se é primo
-unsigned long int verifica_primo(int number){
-   int cont_div = 0, n_primos = 0;
-
-   for(int j = 1; j <= number ; j++){
+unsigned int verifica_primo(unsigned long int number){
+   int j, cont_div = 0, n_primos = 0;
+   
+   for(j = 2; (j <= number) && (number >= 2) ; j++){
      //se é um divisor e o numero é diferente de 1, conta +1 divisor
-     if ((number % j == 0) && (j != 1)) cont_div++;
+     if ((number % j) == 0) cont_div++;
 
      //se encontrar um segundo divisor pode quebrar o laço
-     if (cont_div > 1) break;
+     if (cont_div >= 2) break;
    }
 
   //se só houver 1 divisor, o número é primo
   if (cont_div == 1) n_primos++;
-
+ 
   return n_primos;
 }
 
@@ -57,30 +57,23 @@ int main(){
    //lê valores do usuario
    input_vetor();
 
-   for (int i = 0; i < MAX_PROCS ; i++){
+   for (unsigned int i = 0; i < MAX_PROCS ; i++){
       PID[i] = fork();
+      
       if (PID[i] == 0){
-          primos = verifica_primo(vetor[i]);
-          *shrd_memory += primos;
-          exit(0);
+	  for (unsigned int k = 0 ; k+i < size_vet ; k+=4){     
+        	primos = verifica_primo(vetor[k+i]);
+   	        *shrd_memory += primos;
+          }
+	  exit(0);
       }
+      else continue;
    }
 
    //sincronizando processos
    for (int k = 0 ; k < MAX_PROCS; k++) waitpid(PID[k], NULL, 0);
-
-   for (int i = 4; i < MAX_PROCS ; i++){
-      PID[i] = fork();
-      if (PID[i] == 0){
-          primos = verifica_primo(vetor[i]);
-          *shrd_memory += primos;
-          exit(0);
-      }
-   }
-
+   
    printf("%d\n", *shrd_memory);
-
-   //printf("%ls\n", shrd_memory);
 
    return 0;
 }
